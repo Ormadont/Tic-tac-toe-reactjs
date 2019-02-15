@@ -48,7 +48,8 @@ class Board extends React.Component {
 class Game extends React.Component {
     state = {
         history: [{
-            squares: Array(9).fill(null)
+            squares: Array(9).fill(null),
+            curRowCol: { row: null, col: null }
         }],
         xIsNext: true,
         stepNumber: 0,
@@ -58,6 +59,8 @@ class Game extends React.Component {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
+        // const rowCol = {...current.curRowCol};
+        const curRowCol = { row: calculateRow(i), col: calculateCol(i) };
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
@@ -65,11 +68,11 @@ class Game extends React.Component {
         this.setState({
             history: history.concat([{
                 squares: squares,
+                curRowCol: curRowCol,
             }]),
             xIsNext: !this.state.xIsNext,
             stepNumber: history.length,
         });
-        console.log(history);
     }
 
     jumpTo(step) {
@@ -84,8 +87,11 @@ class Game extends React.Component {
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
         const moves = history.map((step, move) => {
+            const char = (move % 2) ? 'X' : 'O';
+            const row = step.curRowCol.row;
+            const col = step.curRowCol.col;
             const desc = move ?
-                'Перейти к ходу №' + move :
+                `Перейти к ходу ${move} - ${char} - ${row}:${col} ` :
                 'Перейти к началу игры';
             return (
                 <li key={move}>
@@ -122,6 +128,40 @@ ReactDOM.render(
     <Game />,
     document.getElementById('root')
 );
+
+function calculateRow(i) {
+    if (i < 3) return 1
+    else if (i < 6) return 2
+    else return 3
+}
+
+function calculateCol(i) {
+    let col = 0;
+    switch (i) {
+        case 0:
+            col = 1;
+            break;
+        case 3:
+            col = 1;
+            break;
+        case 6:
+            col = 1;
+            break;
+        case 1:
+            col = 2;
+            break;
+        case 4:
+            col = 2;
+            break;
+        case 7:
+            col = 2;
+            break;
+        default:
+            col = 3;
+            break;
+    }
+    return col;
+}
 
 function calculateWinner(squares) {
     const lines = [
