@@ -80,9 +80,11 @@ class Game extends React.Component {
             stepNumber: step,
             xIsNext: (step % 2) === 0,
         });
+
     }
 
     render() {
+        let styleText = { fontWeight: "bold", };
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winner = calculateWinner(current.squares);
@@ -93,12 +95,22 @@ class Game extends React.Component {
             const desc = move ?
                 `Перейти к ходу ${move} - ${char} - ${row}:${col} ` :
                 'Перейти к началу игры';
+            if (move === this.state.stepNumber) {
+                styleText = { fontWeight: "bold", };
+            }
+            else {
+                styleText = { fontWeight: "normal", };
+            }
             return (
                 <li key={move}>
-                    <button onClick={() => { this.jumpTo(move) }}>{desc}</button>
+                    <button
+                        style={styleText}
+                        onClick={() => { this.jumpTo(move) }}
+                    >{desc}</button>
                 </li>
             )
         })
+
         let status;
         if (winner) {
             status = `Победа: ${winner}`;
