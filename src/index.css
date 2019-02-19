@@ -6,6 +6,10 @@ body {
   ol, ul {
     padding-left: 20px;
   }
+  li button {
+    width: 185px;
+    text-align: left;
+  }
   
   .board-row:after {
     clear: both;
