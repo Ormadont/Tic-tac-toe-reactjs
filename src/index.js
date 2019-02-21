@@ -49,6 +49,11 @@ class Game extends React.Component {
         }],
         xIsNext: true,
         stepNumber: 0,
+        ascOrderMoves: true,
+    }
+
+    handleClickOrder() {
+        this.setState({ ascOrderMoves: !this.state.ascOrderMoves })
     }
 
     handleClick(i) {
@@ -107,6 +112,10 @@ class Game extends React.Component {
             )
         })
 
+        if (!this.state.ascOrderMoves) {
+            moves.sort(() => 1);
+        }
+
         let status;
         if (winner) {
             status = `Победа: ${winner}`;
@@ -124,6 +133,13 @@ class Game extends React.Component {
                 <div className="game-info">
                     <div>{status}</div>
                     <ol>{moves}</ol>
+                </div>
+                <div className="toggle-button">
+                    <button
+                        onClick={() => this.handleClickOrder()}
+                    >
+                        Сортировка
+                    </button>
                 </div>
             </div>
         );
