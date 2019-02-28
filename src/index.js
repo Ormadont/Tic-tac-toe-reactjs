@@ -93,6 +93,7 @@ class Game extends React.Component {
 
     render() {
         let styleText = { fontWeight: "bold", };
+        let lastStep;
         const history = this.state.history;
         const current = history[this.state.stepNumber];
         const winnerSquares = calculateWinner(current.squares);
@@ -109,6 +110,7 @@ class Game extends React.Component {
             else {
                 styleText = { fontWeight: "normal", };
             }
+            lastStep = move;
             return (
                 <li key={move}>
                     <button
@@ -127,6 +129,8 @@ class Game extends React.Component {
         if (winnerSquares) {
             let winner = current.squares[winnerSquares[0]];
             status = `Победа: ${winner}`;
+        } if ((lastStep === 9) && (winnerSquares === null)) {
+            status = `Ничья!`;
         } else {
             status = `Следующий: ${this.state.xIsNext ? 'X' : 'O'}`;
         }
